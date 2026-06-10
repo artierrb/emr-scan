@@ -1,0 +1,2 @@
+cd "F:\A.Work\My Project\EMR Project\EMRScan"
+dotnet build -c Release
