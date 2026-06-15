@@ -2,12 +2,13 @@ namespace EMRScan
 {
     public class ScanItem
     {
-        public string ImagePath  { get; set; }   // temp JPG path
-        public string OcrPk      { get; set; }   // extracted from image
-        public string Hn         { get; set; }   // from DB
-        public string FormCode   { get; set; }   // from DB
-        public string Status     { get; set; }   // "Approve" / "Not Found" / "Skipped"
-        public bool   IsEditing  { get; set; }   // user editing OcrPk
-        public string TreatNo    { get; set; }   // from DB via CHARTPAGET
+        public string ImagePath { get; set; } = "";
+        public string OcrPk     { get; set; } = "";
+        public string Hn        { get; set; } = "";
+        public string FormCode  { get; set; } = "";
+        public string Status    { get; set; } = "";
+        public string TreatNo   { get; set; } = "";
+        public int    PageSeq   { get; set; } = 1;   // which page this image is (1-based)
+        public int    PageCount { get; set; } = 1;   // total pages for this form
     }
 }

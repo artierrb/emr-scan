@@ -52,10 +52,9 @@ namespace EMRScan
 
             _txtUser = new TextBox
             {
-                Location  = new Point(0, 88),
-                Width     = 280,
-                Text      = prefilledUserId,
-                CharacterCasing = CharacterCasing.Upper
+                Location = new Point(0, 88),
+                Width    = 280,
+                Text     = prefilledUserId.ToUpper()
             };
             panel.Controls.Add(_txtUser);
 

@@ -13,11 +13,16 @@ namespace EMRScan
         public static string TessData      { get; set; } = @"C:\HNT.RDB\OCR\tessdata";
 
         // Crop top-right corner (default 20% width, 8% height) then OCR
-        public static string ReadOcrPk(string imagePath, float cropXRatio = 0.72f,
-                                                          float cropYRatio = 0.0f,
-                                                          float cropWRatio = 0.28f,
-                                                          float cropHRatio = 0.08f)
+        public static string ReadOcrPk(string imagePath, float cropXRatio = -1f,
+                                                          float cropYRatio = -1f,
+                                                          float cropWRatio = -1f,
+                                                          float cropHRatio = -1f)
         {
+            // Use AppConfig values when not explicitly provided
+            if (cropXRatio < 0) cropXRatio = AppConfig.OcrCropX;
+            if (cropYRatio < 0) cropYRatio = AppConfig.OcrCropY;
+            if (cropWRatio < 0) cropWRatio = AppConfig.OcrCropW;
+            if (cropHRatio < 0) cropHRatio = AppConfig.OcrCropH;
             try
             {
                 string cropPath = Path.Combine(Path.GetTempPath(),
@@ -56,14 +61,16 @@ namespace EMRScan
                     string text = File.ReadAllText(txtPath).Trim();
                     File.Delete(txtPath);
 
-                    // Log raw OCR output for debugging
-                    System.Diagnostics.Debug.WriteLine($"[OCR] raw: {text}");
-
-                    // Try strict pattern first: +\d{13}+
-                    var m = Regex.Match(text, @"\+(\d{13})\+");
+                    // Tesseract (--psm 7 digits) reads + as 4
+                    // Strict: [+4] ล้อมรอบ 13 หลัก
+                    var m = Regex.Match(text, @"[+4]\s*(\d{13})\s*[+4]");
                     if (m.Success) return m.Groups[1].Value;
 
-                    // Fallback: any 13-digit sequence
+                    // Fallback: 14 หลักติดกัน ตัดหัวท้ายออก
+                    m = Regex.Match(text, @"[+4](\d{13})[+4]?");
+                    if (m.Success) return m.Groups[1].Value;
+
+                    // Fallback สุดท้าย: 13 หลักล้วน
                     m = Regex.Match(text, @"(\d{13})");
                     if (m.Success) return m.Groups[1].Value;
 

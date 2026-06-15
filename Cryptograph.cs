@@ -19,7 +19,8 @@ namespace EMRScan
         public static bool Verify(string userId, string plain, string stored)
         {
             if (stored == null) return false;
-            return Encrypt(userId.ToUpper(), plain) == stored;
+            // Use userId as-is (same case as stored in DB) — do NOT ToUpper
+            return Encrypt(userId, plain) == stored;
         }
     }
 }
