@@ -7,6 +7,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>latest</LangVersion>
+    <AssemblyVersion>1.1.0.1</AssemblyVersion>
+    <FileVersion>1.1.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
